@@ -1,0 +1,20 @@
+@if (isLoggedIn$ | async) {
+  <nav class="nav-bar">
+    <div class="nav-bar__brand">
+      <a routerLink="/products">Storefront</a>
+    </div>
+
+    <div class="nav-bar__links">
+      <a routerLink="/products" class="nav-link">Products</a>
+      <a routerLink="/orders" class="nav-link">My Orders</a>
+      @if ((userContext | async)?.isAdmin) {
+        <a routerLink="/admin/products" class="nav-link">Manage Products</a>
+      }
+    </div>
+
+    <div class="nav-bar__user">
+      <span class="nav-bar__email">{{ (userContext | async)?.email }}</span>
+      <button class="btn btn--secondary btn--sm" (click)="signOut()">Sign Out</button>
+    </div>
+  </nav>
+}

@@ -1,0 +1,11 @@
+<button
+  [type]="type"
+  [disabled]="loading || disabled"
+  [class]="'btn btn--' + variant"
+  (click)="clicked.emit()">
+  @if (loading) {
+    <span class="btn__spinner"></span>
+  } @else {
+    {{ label }}
+  }
+</button>

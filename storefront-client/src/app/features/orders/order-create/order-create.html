@@ -1,0 +1,50 @@
+<div class="order-create-page">
+  <div class="page-header">
+    <h1>Your Cart</h1>
+    <a routerLink="/products" class="btn btn--secondary">Continue Shopping</a>
+  </div>
+
+  @if (cartItems().length === 0) {
+    <div class="empty-cart">
+      <p>Your cart is empty.</p>
+      <a routerLink="/products" class="btn btn--primary">Browse Products</a>
+    </div>
+  } @else {
+    <div class="cart-layout">
+      <div class="cart-items">
+        @for (item of cartItems(); track item.productId) {
+          <div class="cart-item">
+            <div class="cart-item__info">
+              <span class="cart-item__name">{{ item.productName }}</span>
+              <span class="cart-item__price">£{{ item.unitPrice | number:'1.2-2' }} each</span>
+            </div>
+            <div class="cart-item__controls">
+              <input
+                type="number"
+                [value]="item.quantity"
+                min="1"
+                (change)="updateQuantity(item.productId, $any($event.target).valueAsNumber)"
+                class="quantity-input" />
+              <span class="cart-item__subtotal">£{{ (item.unitPrice * item.quantity) | number:'1.2-2' }}</span>
+              <button class="remove-btn" (click)="removeItem(item.productId)">Remove</button>
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="cart-summary">
+        <h2>Order Summary</h2>
+        <div class="summary-row">
+          <span>Total</span>
+          <span class="summary-total">£{{ total | number:'1.2-2' }}</span>
+        </div>
+        <p class="payment-note">Payment will be processed on confirmation.</p>
+        <app-loading-button
+          label="Place Order"
+          [loading]="isSubmitting()"
+          [disabled]="cartItems().length === 0"
+          (clicked)="placeOrder()" />
+      </div>
+    </div>
+  }
+</div>
